@@ -6,7 +6,7 @@ This file creates your application.
 """
 
 from app import app, db, login_manager
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, current_user, login_required
 from forms import LoginForm
 from models import UserProfile
@@ -53,7 +53,23 @@ def login():
             return redirect(url_for("/secure-page"))  # they should be redirected to a secure-page route instead
     return render_template("login.html", form=form)
 
-
+@app.route("/secure-page")
+@login_required
+def secure_page():  
+    if not session.get("logged_in"): 
+        return redirect(url_for("/login")) 
+    else: 
+        if session.get("logged_in"): 
+            return render_template("secure_page.html") 
+    
+    
+@app.route("/logout")
+@login_required 
+def logout(): 
+    logout_user() 
+    flash("You have logged out","danger") 
+    return redirect(url_for("home"))
+    
 # user_loader callback. This callback is used to reload the user object from
 # the user ID stored in the session
 @login_manager.user_loader
