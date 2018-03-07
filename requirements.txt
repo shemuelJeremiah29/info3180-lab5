@@ -6,7 +6,8 @@ Flask-WTF
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Login
-psycopg2
+psycopg2 
+flask-script
 
 # ----------------------
 # Production Server
